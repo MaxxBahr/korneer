@@ -1,4 +1,8 @@
+// Entities of coffee
 pub mod coffee{
+    use serde::{Deserialize, Serialize};
+
+    #[derive(Serialize, Deserialize)]
     pub enum Taste{
         Chocolate,
         Fruity,
@@ -6,6 +10,7 @@ pub mod coffee{
         Default
     }
 
+    #[derive(Serialize, Deserialize)]
     pub enum FieldValue{
         name(String),
         rating(u8),
@@ -15,6 +20,8 @@ pub mod coffee{
         extraction_time(f32),
         taste(Taste)
     }
+
+    #[derive(Serialize, Deserialize)]
     pub struct Coffee {
         name: String,
         rating: u8,

@@ -3,7 +3,7 @@ mod database;
 
 use crate::coffee::coffee::{Coffee, FieldValue};
 
-use tokio::sync::Mutex;
+use std::sync::Mutex;
 use std::sync::Arc;
 use rusqlite::Connection;
 use tauri::Manager;
@@ -36,7 +36,7 @@ pub fn run() {
                 Arc::new(
                     Mutex::new(DatabaseConncetion
                         {
-                        connection: Connection::open("coffee.db")?,
+                        connection: Connection::open("coffee.db").unwrap(),
                         }
                     )   
                 )
