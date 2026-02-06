@@ -1,5 +1,6 @@
 // Operations on the database
 pub mod database {
+    use rusqlite::Params;
     use serde_json;
     use std::sync::Arc;
     use std::sync::Mutex;
@@ -32,7 +33,13 @@ pub mod database {
     }
 
     #[tauri::command]
-    pub fn update_entry(connection: Arc<Mutex<rusqlite::Connection>>, coffee: Coffee){
+    pub fn update_entry<T: Params>(connection: Arc<Mutex<rusqlite::Connection>>, name: String, column: String, value: T){
+        let temp_con = connection.lock().unwrap();
+        let _ = temp_con.execute(format!("UPDATE coffee
+                            SET {} = value1, column2 = value2, ...
+                            WHERE name = {} ",column, name).as_str(), 
+                            (value)
+                        );
 
     }
 
