@@ -33,6 +33,7 @@ pub mod database {
                         );
     }
 
+    #[tauri::command]
     pub fn update_entry<T: Params>(connection: Arc<Mutex<rusqlite::Connection>>, name: String, column: String, value: T){
         let temp_con = connection.lock().unwrap();
         let _ = temp_con.execute(format!("UPDATE coffee
@@ -43,6 +44,7 @@ pub mod database {
 
     }
 
+    #[tauri::command]
     pub fn get_entry<T: Params + rusqlite::ToSql>(connection: Arc<Mutex<rusqlite::Connection>>,column: String, value: T) -> Result<Vec<Coffee>, rusqlite::Error>{
         let temp_con = connection.lock().unwrap();
         let mut stmt = temp_con.prepare(format!("
@@ -51,7 +53,15 @@ pub mod database {
                             WHERE {column} = ?1").as_str())?;
 
         let result = stmt.query_map([value], |row| {
-            Ok(Coffee { name: row.get(0)?, rating: row.get(1)?, url: row.get(2)?, grind_size: row.get(3)?, grind_time: row.get(4)?, extraction_time: row.get(5)?, taste: row.get(6)? })
+            Ok(Coffee { 
+                name: row.get(0)?, 
+                rating: row.get(1)?, 
+                url: row.get(2)?, 
+                grind_size: row.get(3)?, 
+                grind_time: row.get(4)?, 
+                extraction_time: row.get(5)?, 
+                taste: row.get(6)? 
+            })
         })?;
         let mut res_vec = Vec::new();
         for row in result{

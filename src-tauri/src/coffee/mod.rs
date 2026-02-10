@@ -1,6 +1,6 @@
 // Entities of coffee
 pub mod coffee{
-    use rusqlite::ToSql;
+    use rusqlite::{ToSql, types::FromSql};
     use serde::{Deserialize, Serialize};
 
     #[derive(Serialize, Deserialize)]
@@ -19,6 +19,18 @@ pub mod coffee{
                 Taste::Caramel => Ok("Caramel".to_string().into()),
                 Taste::Default => Ok("Default".to_string().into()), 
                 _ => Ok("".to_string().into())
+            }
+        }
+    }
+
+    impl FromSql for Taste{
+        fn column_result(value: rusqlite::types::ValueRef<'_>) -> rusqlite::types::FromSqlResult<Self> {
+            match value.as_str()? {
+                "Chocolate" => Ok(Taste::Chocolate),
+                "Fruity" => Ok(Taste::Fruity),
+                "Caramel" => Ok(Taste::Caramel),
+                "Default" => Ok(Taste::Default), 
+                _ => Ok(Taste::Default)
             }
         }
     }
