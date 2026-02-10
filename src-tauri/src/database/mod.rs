@@ -47,10 +47,15 @@ pub mod database {
     #[tauri::command]
     pub fn get_entry<T: Params + rusqlite::ToSql>(connection: Arc<Mutex<rusqlite::Connection>>,column: String, value: T) -> Result<Vec<Coffee>, rusqlite::Error>{
         let temp_con = connection.lock().unwrap();
-        let mut stmt = temp_con.prepare(format!("
-                            SELECT *
-                            FROM coffee
-                            WHERE {column} = ?1").as_str())?;
+        let query = if column == "".to_string(){
+            "SELECT * FROM coffee".to_string()
+        }else{
+            format!("
+                    SELECT *
+                    FROM coffee
+                    WHERE {column} = ?1")
+        };
+        let mut stmt = temp_con.prepare(query.as_str())?;
 
         let result = stmt.query_map([value], |row| {
             Ok(Coffee { 
