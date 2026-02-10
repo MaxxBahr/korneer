@@ -5,7 +5,7 @@ pub mod coffee{
     use rusqlite::{ToSql, types::FromSql};
     use serde::{Deserialize, Serialize};
 
-    #[derive(Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+    #[derive(Serialize, Deserialize)]
     pub enum Taste{
         Chocolate,
         Fruity,
@@ -48,7 +48,6 @@ pub mod coffee{
         taste(Taste)
     }
 
-    // Implement Ord, Eq, PartialEq, PartialOrd for Coffee
     #[derive(Serialize, Deserialize)]
     pub struct Coffee {
         pub name: String,
