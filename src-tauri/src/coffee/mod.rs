@@ -1,9 +1,11 @@
 // Entities of coffee
 pub mod coffee{
+    use std::cmp::Ordering;
+
     use rusqlite::{ToSql, types::FromSql};
     use serde::{Deserialize, Serialize};
 
-    #[derive(Serialize, Deserialize)]
+    #[derive(Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
     pub enum Taste{
         Chocolate,
         Fruity,
@@ -46,6 +48,7 @@ pub mod coffee{
         taste(Taste)
     }
 
+    // Implement Ord, Eq, PartialEq, PartialOrd for Coffee
     #[derive(Serialize, Deserialize)]
     pub struct Coffee {
         pub name: String,
@@ -56,6 +59,28 @@ pub mod coffee{
         pub extraction_time: f32,
         pub taste: Taste
     }
+
+    impl Ord for Coffee{
+        fn cmp(&self, other: &Self) -> Ordering{
+            self.rating
+                .cmp(&other.rating)
+                .then(self.name.cmp(&other.name))
+        }
+    }
+
+    impl PartialOrd for Coffee{
+        fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+            Some(self.cmp(other))
+        }
+    }
+
+    impl PartialEq for Coffee{
+        fn eq(&self, other: &Self) -> bool {
+            self.rating == other.rating && self.name == other.name
+        }
+    }
+
+    impl Eq for Coffee{}
 
     impl Coffee {
         pub fn new(name: String, url: String) -> Coffee{
