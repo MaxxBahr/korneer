@@ -1,3 +1,6 @@
 export default function Coffee() {
-    return <h1>Coffee Component</h1>;
+    return <div>
+        <div><img src="" alt="" /></div>
+        <div><h2>House Blend</h2></div>
+    </div>;
 }
