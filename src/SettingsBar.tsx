@@ -13,7 +13,7 @@ function SettingsBar() {
           <Nav>
             <NavDropdown
               id="nav-dropdown-dark-example"
-              title="Dropdown"
+              title="Menu"
               menuVariant="dark"
             >
               <NavDropdown.Item href="#action/3.1">Add Coffee</NavDropdown.Item>
