@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 export default function Coffee() {
-    return <Container>
+    return <Container className='bg-secondary-subtle'>
         <Row className='justify-content-md-center mb-5'>
             <Col><h2>Photo</h2></Col>
             <Col>
