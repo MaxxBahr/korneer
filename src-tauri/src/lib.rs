@@ -37,12 +37,11 @@ pub fn run() {
             app.manage(Arc::new(Mutex::new(DatabaseConncetion {
                 connection: Connection::open("coffee.db").unwrap(),
             })));
-            // Not working, fix to finish execution
             let shell = app.shell();
             let output = tauri::async_runtime::block_on(async move {
                 shell
-                    .command("sqlite3")
-                    .args(["coffee.db < schema.sql"])
+                    .command("sh")
+                    .args(["-c","sqlite3 coffee.db < schema.sql"])
                     .output()
                     .await
                     .unwrap()  
