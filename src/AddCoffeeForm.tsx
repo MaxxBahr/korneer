@@ -15,7 +15,6 @@ export default function AddCoffeeForm(){
         machine: ''
     })
 
-    // Values are not being stored in the variable
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
         const key = e.target.name;
         const value = e.target.value;
@@ -23,6 +22,7 @@ export default function AddCoffeeForm(){
         setNewcoffee(updatedCoffee)
         console.log(updatedCoffee);
     }
+    console.log("Component rendered")
     return(
         <Container>
             <Form.Label htmlFor="name">name</Form.Label>
