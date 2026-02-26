@@ -25,4 +25,5 @@ serde_json = "1"
 tokio = "1.48.0"
 rusqlite = "0.37.0"
 tauri-plugin-shell = "2"
+tauri-plugin-os = "2"
 
