@@ -30,6 +30,7 @@ fn edit_existing_coffee(value: FieldValue) -> bool {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![new_coffee])
@@ -38,19 +39,23 @@ pub fn run() {
                 connection: Connection::open("coffee.db").unwrap(),
             })));
             let shell = app.shell();
+            let platform = tauri_plugin_os::platform();
+            print!("{}",tauri_plugin_os::platform());
+            let system_exe: &str;
+            if platform == "windows"{
+                system_exe = "sqlite3.exe";
+            }else{
+                system_exe = "sqlite3";
+            }                
             let output = tauri::async_runtime::block_on(async move {
                 shell
                     .command("sh")
-                    .args(["-c","sqlite3 coffee.db < schema.sql"])
+                    // Use string slice for OS seperation
+                    .args(["-c", format!("{} coffee.db < schema.sql", system_exe).as_str()])
                     .output()
                     .await
-                    .unwrap()  
+                    .unwrap()
             });
-            if output.status.success(){
-                println!("Result: {:?}", String::from_utf8(output.stdout));
-            }else{
-                println!("Exit with code: {}", output.status.code().unwrap());
-            }
             Ok(())
         })
         .run(tauri::generate_context!())
