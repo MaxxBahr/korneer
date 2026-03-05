@@ -40,25 +40,22 @@ pub fn run() {
             })));
             let shell = app.shell();
             let platform = tauri_plugin_os::platform();
+            print!("{}",tauri_plugin_os::platform());
+            let system_exe: &str;
             if platform == "windows"{
-                let output = tauri::async_runtime::block_on(async move {
+                system_exe = "sqlite3.exe";
+            }else{
+                system_exe = "sqlite3";
+            }                
+            let output = tauri::async_runtime::block_on(async move {
                 shell
                     .command("sh")
-                    .args(["-c", "sqlite3.exe coffee.db < schema.sql"])
+                    // Use string slice for OS seperation
+                    .args(["-c", format!("{} coffee.db < schema.sql", system_exe).as_str()])
                     .output()
                     .await
                     .unwrap()
-                });
-            }else{
-                let output = tauri::async_runtime::block_on(async move {
-                    shell
-                        .command("sh")
-                        .args(["-c", "sqlite3 coffee.db < schema.sql"])
-                        .output()
-                        .await
-                        .unwrap()
-                });
-            }
+            });
             Ok(())
         })
         .run(tauri::generate_context!())
