@@ -21,6 +21,7 @@
           "sidecar": false
         }
       ]
-    }
+    },
+    "os:default"
   ]
 }
