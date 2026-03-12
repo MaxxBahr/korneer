@@ -40,7 +40,6 @@ pub fn run() {
             })));
             let shell = app.shell();
             let platform = tauri_plugin_os::platform();
-            print!("{}",tauri_plugin_os::platform());
             let system_exe: &str;
             if platform == "windows"{
                 system_exe = "sqlite3.exe";
