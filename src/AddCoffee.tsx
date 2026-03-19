@@ -3,6 +3,13 @@ import Modal from 'react-bootstrap/Modal';
 import AddCoffeeForm from './AddCoffeeForm';
 
 function AddCoffee({ show, handleClose }: {show: boolean, handleClose: ()=> void}) {
+
+  function handleSave(coffeeData: any){
+    console.log("Received in parent: ", coffeeData);
+
+    handleClose();
+  }
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -10,16 +17,14 @@ function AddCoffee({ show, handleClose }: {show: boolean, handleClose: ()=> void
       </Modal.Header>
 
       <Modal.Body>
-        <AddCoffeeForm></AddCoffeeForm>
+        <AddCoffeeForm onSave={handleSave}></AddCoffeeForm>
       </Modal.Body>
 
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
           Abort
         </Button>
-        <Button variant="primary">
-          Save changes
-        </Button>
+
       </Modal.Footer>
     </Modal>
   );
