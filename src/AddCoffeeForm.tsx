@@ -3,15 +3,16 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import React from "react";
+import { invoke } from "@tauri-apps/api/core";
 
 export default function AddCoffeeForm(){
     const [newcoffee, setNewcoffee] = useState({
         name: '',
-        rating: '',
+        rating: 0,
         taste: '',
-        grindtime: '',
-        extractiontime: '',
-        count: '',
+        grindtime: 0.0,
+        extractiontime: 0.0,
+        count: 0,
         url: '',
         machine: ''
     })
@@ -27,7 +28,8 @@ export default function AddCoffeeForm(){
 
     function handleSubmit(e: React.FormEvent){
         e.preventDefault();
-        // Call tauri function to backend
+        console.log("New entry added!");
+        invoke("add_new_entry", {coffee: newcoffee});
     }
 
     return(
@@ -37,7 +39,7 @@ export default function AddCoffeeForm(){
                 <Form.Control type="text" name="name" id="name" onChange={handleChange}></Form.Control>
 
                 <Form.Label htmlFor="rating">rating</Form.Label>
-                <Form.Control type="text" name="rating" id="rating" onChange={handleChange}></Form.Control>
+                <Form.Control type="number" name="rating" id="rating" onChange={handleChange}></Form.Control>
 
                 <Form.Label htmlFor="taste">taste</Form.Label>
                 <Form.Select aria-label="Default select example" name="taste" id="taste" onChange={handleChange}>
@@ -49,11 +51,11 @@ export default function AddCoffeeForm(){
 
                 {/* Change to number */}
                 <Form.Label htmlFor="grindtime">grind time</Form.Label>
-                <Form.Control type="text" name="grindtime" id="grindtime" onChange={handleChange}></Form.Control>
+                <Form.Control type="number" name="grindtime" id="grindtime" onChange={handleChange}></Form.Control>
 
                 {/* Change to number */}
                 <Form.Label htmlFor="extractiontime">extraction time</Form.Label>
-                <Form.Control type="text" name="extractiontime" id="extractiontime" onChange={handleChange}></Form.Control>
+                <Form.Control type="number" name="extractiontime" id="extractiontime" onChange={handleChange}></Form.Control>
 
                 {/* Change to increaser */}
                 <Form.Label htmlFor="count">count</Form.Label>
@@ -69,7 +71,7 @@ export default function AddCoffeeForm(){
                 <Form.Label htmlFor="photo">photo</Form.Label>
                 <Form.Control type="text" name="photo" id="photo" onChange={handleChange}></Form.Control>
                 <br />
-                <Button variant="primary">
+                <Button variant="primary" type="submit">
                     Save changes
                 </Button>
             </Form>

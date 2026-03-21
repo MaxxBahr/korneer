@@ -11,7 +11,6 @@ use std::sync::Mutex;
 use tauri::Manager;
 use tauri_plugin_shell::ShellExt;
 
-#[derive(Serialize, Deserialize)]
 struct DatabaseConncetion {
     connection: Connection,
 }
@@ -24,9 +23,6 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![add_new_entry])
         .setup(|app| {
-            app.manage(Arc::new(Mutex::new(DatabaseConncetion {
-                connection: Connection::open("coffee.db").unwrap(),
-            })));
             let shell = app.shell();
             let platform = tauri_plugin_os::platform();
             let system_exe: &str;
