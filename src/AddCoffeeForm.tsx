@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import React from "react";
 
-export default function AddCoffeeForm({ onSave }: {onSave: (data:any) => void}){
+export default function AddCoffeeForm(){
     const [newcoffee, setNewcoffee] = useState({
         name: '',
         rating: '',
@@ -27,7 +27,7 @@ export default function AddCoffeeForm({ onSave }: {onSave: (data:any) => void}){
 
     function handleSubmit(e: React.FormEvent){
         e.preventDefault();
-        onSave(newcoffee);
+        // Call tauri function to backend
     }
 
     return(
@@ -68,6 +68,7 @@ export default function AddCoffeeForm({ onSave }: {onSave: (data:any) => void}){
                 {/* Change to file upload */}
                 <Form.Label htmlFor="photo">photo</Form.Label>
                 <Form.Control type="text" name="photo" id="photo" onChange={handleChange}></Form.Control>
+                <br />
                 <Button variant="primary">
                     Save changes
                 </Button>
