@@ -1,5 +1,6 @@
 // Operations on the database
 pub mod database {
+    use rusqlite::Connection;
     use rusqlite::MappedRows;
     use rusqlite::Params;
     use serde_json;
@@ -8,8 +9,8 @@ pub mod database {
     use crate::coffee::coffee::Coffee;
 
     #[tauri::command]
-    pub fn add_new_entry(connection: Arc<Mutex<rusqlite::Connection>>, coffee: Coffee){
-        let temp_con = connection.lock().unwrap();
+    pub fn add_new_entry(coffee: Coffee){
+        let temp_con = Connection::open("coffee.db").unwrap();
         let _ = temp_con.execute("INSERT INTO coffee 
                             (name, 
                              rating, 
@@ -34,8 +35,8 @@ pub mod database {
     }
 
     #[tauri::command]
-    pub fn update_entry<T: Params>(connection: Arc<Mutex<rusqlite::Connection>>, name: String, column: String, value: T){
-        let temp_con = connection.lock().unwrap();
+    pub fn update_entry<T: Params>(name: String, column: String, value: T){
+        let temp_con = Connection::open("coffee.db").unwrap();
         let _ = temp_con.execute(format!("UPDATE coffee
                             SET {} = ?1
                             WHERE name = {} ",column, name).as_str(), 
@@ -45,8 +46,8 @@ pub mod database {
     }
 
     #[tauri::command]
-    pub fn get_entry<T: Params + rusqlite::ToSql>(connection: Arc<Mutex<rusqlite::Connection>>,column: String, value: T) -> Result<Vec<Coffee>, rusqlite::Error>{
-        let temp_con = connection.lock().unwrap();
+    pub fn get_entry<T: Params + rusqlite::ToSql>(column: String, value: T) -> Result<Vec<Coffee>, rusqlite::Error>{
+        let temp_con = Connection::open("coffee.db").unwrap();
         let query = if column == "".to_string(){
             "SELECT * FROM coffee".to_string()
         }else{
@@ -76,8 +77,8 @@ pub mod database {
     }
 
     #[tauri::command]
-    pub fn delete_entry(connection: Arc<Mutex<rusqlite::Connection>>, name: String){
-        let temp_con = connection.lock().unwrap();
+    pub fn delete_entry(name: String){
+        let temp_con = Connection::open("coffee.db").unwrap();
         let _ = temp_con.execute("DELETE
                                   FROM coffee
                                   WHERE name = ?1", (name,));  

@@ -40,7 +40,7 @@ pub mod coffee{
     #[derive(Serialize, Deserialize)]
     pub enum FieldValue{
         name(String),
-        rating(u8),
+        rating(i32),
         url(String),
         grind_size(u16),
         grind_time(f32),
@@ -51,7 +51,7 @@ pub mod coffee{
     #[derive(Serialize, Deserialize)]
     pub struct Coffee {
         pub name: String,
-        pub rating: u8,
+        pub rating: i32,
         pub url: String,
         pub grind_size: u16,
         pub grind_time: f32,

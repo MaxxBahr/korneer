@@ -21,3 +21,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+package-lock.json
+src-tauri/Cargo.lock
+src-tauri/coffee.db
